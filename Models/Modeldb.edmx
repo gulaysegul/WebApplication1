@@ -1,0 +1,443 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Database1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Gruplar">
+          <Key>
+            <PropertyRef Name="grupmesajId" />
+          </Key>
+          <Property Name="grupmesajId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="grupAdi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="olusturmaZamani" Type="datetime" Nullable="false" />
+          <Property Name="icerik" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="grupSohbetId" Type="int" Nullable="false" />
+          <Property Name="groupUserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Katilimcilar">
+          <Key>
+            <PropertyRef Name="katilimciId" />
+          </Key>
+          <Property Name="katilimciId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="katilimciSohbetId" Type="int" Nullable="false" />
+          <Property Name="katilimciUserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Mesajlar">
+          <Key>
+            <PropertyRef Name="mesajId" />
+          </Key>
+          <Property Name="mesajId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="mesajSohbetId" Type="int" Nullable="false" />
+          <Property Name="mesajUserId" Type="int" Nullable="false" />
+          <Property Name="icerik" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="gonderimTarihi" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sohbetler">
+          <Key>
+            <PropertyRef Name="sohbetId" />
+          </Key>
+          <Property Name="sohbetId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="olusturanId" Type="int" Nullable="false" />
+          <Property Name="olusturmaTarihi" Type="datetime" Nullable="false" />
+          <Property Name="sohbetTipi" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KullaniciAdi" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Sifre" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="AdiSoyadi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Gruplar_ToSohbetler">
+          <End Role="Sohbetler" Type="Self.Sohbetler" Multiplicity="1" />
+          <End Role="Gruplar" Type="Self.Gruplar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sohbetler">
+              <PropertyRef Name="sohbetId" />
+            </Principal>
+            <Dependent Role="Gruplar">
+              <PropertyRef Name="grupSohbetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Gruplar_ToUsers">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Gruplar" Type="Self.Gruplar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Gruplar">
+              <PropertyRef Name="groupUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Katilimcilar_ToSohbetler">
+          <End Role="Sohbetler" Type="Self.Sohbetler" Multiplicity="1" />
+          <End Role="Katilimcilar" Type="Self.Katilimcilar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sohbetler">
+              <PropertyRef Name="sohbetId" />
+            </Principal>
+            <Dependent Role="Katilimcilar">
+              <PropertyRef Name="katilimciSohbetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Katilimcilar_ToUsers">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Katilimcilar" Type="Self.Katilimcilar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Katilimcilar">
+              <PropertyRef Name="katilimciUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mesajlar_ToSohbetler">
+          <End Role="Sohbetler" Type="Self.Sohbetler" Multiplicity="1" />
+          <End Role="Mesajlar" Type="Self.Mesajlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sohbetler">
+              <PropertyRef Name="sohbetId" />
+            </Principal>
+            <Dependent Role="Mesajlar">
+              <PropertyRef Name="mesajSohbetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mesajlar_ToUsers">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Mesajlar" Type="Self.Mesajlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Mesajlar">
+              <PropertyRef Name="mesajUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sohbetler_ToUsers">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Sohbetler" Type="Self.Sohbetler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Sohbetler">
+              <PropertyRef Name="olusturanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Database1ModelStoreContainer">
+          <EntitySet Name="Gruplar" EntityType="Self.Gruplar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Katilimcilar" EntityType="Self.Katilimcilar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Mesajlar" EntityType="Self.Mesajlar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sohbetler" EntityType="Self.Sohbetler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Gruplar_ToSohbetler" Association="Self.FK_Gruplar_ToSohbetler">
+            <End Role="Sohbetler" EntitySet="Sohbetler" />
+            <End Role="Gruplar" EntitySet="Gruplar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Gruplar_ToUsers" Association="Self.FK_Gruplar_ToUsers">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Gruplar" EntitySet="Gruplar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Katilimcilar_ToSohbetler" Association="Self.FK_Katilimcilar_ToSohbetler">
+            <End Role="Sohbetler" EntitySet="Sohbetler" />
+            <End Role="Katilimcilar" EntitySet="Katilimcilar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Katilimcilar_ToUsers" Association="Self.FK_Katilimcilar_ToUsers">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Katilimcilar" EntitySet="Katilimcilar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mesajlar_ToSohbetler" Association="Self.FK_Mesajlar_ToSohbetler">
+            <End Role="Sohbetler" EntitySet="Sohbetler" />
+            <End Role="Mesajlar" EntitySet="Mesajlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mesajlar_ToUsers" Association="Self.FK_Mesajlar_ToUsers">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Mesajlar" EntitySet="Mesajlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sohbetler_ToUsers" Association="Self.FK_Sohbetler_ToUsers">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Sohbetler" EntitySet="Sohbetler" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Database1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Gruplar">
+          <Key>
+            <PropertyRef Name="grupmesajId" />
+          </Key>
+          <Property Name="grupmesajId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="grupAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="olusturmaZamani" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="icerik" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="grupSohbetId" Type="Int32" Nullable="false" />
+          <Property Name="groupUserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Sohbetler" Relationship="Self.FK_Gruplar_ToSohbetler" FromRole="Gruplar" ToRole="Sohbetler" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Gruplar_ToUsers" FromRole="Gruplar" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Katilimcilar">
+          <Key>
+            <PropertyRef Name="katilimciId" />
+          </Key>
+          <Property Name="katilimciId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="katilimciSohbetId" Type="Int32" Nullable="false" />
+          <Property Name="katilimciUserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Sohbetler" Relationship="Self.FK_Katilimcilar_ToSohbetler" FromRole="Katilimcilar" ToRole="Sohbetler" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Katilimcilar_ToUsers" FromRole="Katilimcilar" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Mesajlar">
+          <Key>
+            <PropertyRef Name="mesajId" />
+          </Key>
+          <Property Name="mesajId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="mesajSohbetId" Type="Int32" Nullable="false" />
+          <Property Name="mesajUserId" Type="Int32" Nullable="false" />
+          <Property Name="icerik" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="gonderimTarihi" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Sohbetler" Relationship="Self.FK_Mesajlar_ToSohbetler" FromRole="Mesajlar" ToRole="Sohbetler" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Mesajlar_ToUsers" FromRole="Mesajlar" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Sohbetler">
+          <Key>
+            <PropertyRef Name="sohbetId" />
+          </Key>
+          <Property Name="sohbetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="olusturanId" Type="Int32" Nullable="false" />
+          <Property Name="olusturmaTarihi" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="sohbetTipi" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Gruplar" Relationship="Self.FK_Gruplar_ToSohbetler" FromRole="Sohbetler" ToRole="Gruplar" />
+          <NavigationProperty Name="Katilimcilar" Relationship="Self.FK_Katilimcilar_ToSohbetler" FromRole="Sohbetler" ToRole="Katilimcilar" />
+          <NavigationProperty Name="Mesajlar" Relationship="Self.FK_Mesajlar_ToSohbetler" FromRole="Sohbetler" ToRole="Mesajlar" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Sohbetler_ToUsers" FromRole="Sohbetler" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KullaniciAdi" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Sifre" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AdiSoyadi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Gruplar" Relationship="Self.FK_Gruplar_ToUsers" FromRole="Users" ToRole="Gruplar" />
+          <NavigationProperty Name="Katilimcilar" Relationship="Self.FK_Katilimcilar_ToUsers" FromRole="Users" ToRole="Katilimcilar" />
+          <NavigationProperty Name="Mesajlar" Relationship="Self.FK_Mesajlar_ToUsers" FromRole="Users" ToRole="Mesajlar" />
+          <NavigationProperty Name="Sohbetler" Relationship="Self.FK_Sohbetler_ToUsers" FromRole="Users" ToRole="Sohbetler" />
+        </EntityType>
+        <Association Name="FK_Gruplar_ToSohbetler">
+          <End Role="Sohbetler" Type="Self.Sohbetler" Multiplicity="1" />
+          <End Role="Gruplar" Type="Self.Gruplar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sohbetler">
+              <PropertyRef Name="sohbetId" />
+            </Principal>
+            <Dependent Role="Gruplar">
+              <PropertyRef Name="grupSohbetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Gruplar_ToUsers">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Gruplar" Type="Self.Gruplar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Gruplar">
+              <PropertyRef Name="groupUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Katilimcilar_ToSohbetler">
+          <End Role="Sohbetler" Type="Self.Sohbetler" Multiplicity="1" />
+          <End Role="Katilimcilar" Type="Self.Katilimcilar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sohbetler">
+              <PropertyRef Name="sohbetId" />
+            </Principal>
+            <Dependent Role="Katilimcilar">
+              <PropertyRef Name="katilimciSohbetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Katilimcilar_ToUsers">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Katilimcilar" Type="Self.Katilimcilar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Katilimcilar">
+              <PropertyRef Name="katilimciUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mesajlar_ToSohbetler">
+          <End Role="Sohbetler" Type="Self.Sohbetler" Multiplicity="1" />
+          <End Role="Mesajlar" Type="Self.Mesajlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sohbetler">
+              <PropertyRef Name="sohbetId" />
+            </Principal>
+            <Dependent Role="Mesajlar">
+              <PropertyRef Name="mesajSohbetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mesajlar_ToUsers">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Mesajlar" Type="Self.Mesajlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Mesajlar">
+              <PropertyRef Name="mesajUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sohbetler_ToUsers">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Sohbetler" Type="Self.Sohbetler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Sohbetler">
+              <PropertyRef Name="olusturanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Database1Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Gruplar" EntityType="Self.Gruplar" />
+          <EntitySet Name="Katilimcilar" EntityType="Self.Katilimcilar" />
+          <EntitySet Name="Mesajlar" EntityType="Self.Mesajlar" />
+          <EntitySet Name="Sohbetler" EntityType="Self.Sohbetler" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK_Gruplar_ToSohbetler" Association="Self.FK_Gruplar_ToSohbetler">
+            <End Role="Sohbetler" EntitySet="Sohbetler" />
+            <End Role="Gruplar" EntitySet="Gruplar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Gruplar_ToUsers" Association="Self.FK_Gruplar_ToUsers">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Gruplar" EntitySet="Gruplar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Katilimcilar_ToSohbetler" Association="Self.FK_Katilimcilar_ToSohbetler">
+            <End Role="Sohbetler" EntitySet="Sohbetler" />
+            <End Role="Katilimcilar" EntitySet="Katilimcilar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Katilimcilar_ToUsers" Association="Self.FK_Katilimcilar_ToUsers">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Katilimcilar" EntitySet="Katilimcilar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mesajlar_ToSohbetler" Association="Self.FK_Mesajlar_ToSohbetler">
+            <End Role="Sohbetler" EntitySet="Sohbetler" />
+            <End Role="Mesajlar" EntitySet="Mesajlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mesajlar_ToUsers" Association="Self.FK_Mesajlar_ToUsers">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Mesajlar" EntitySet="Mesajlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sohbetler_ToUsers" Association="Self.FK_Sohbetler_ToUsers">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Sohbetler" EntitySet="Sohbetler" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Database1ModelStoreContainer" CdmEntityContainer="Database1Entities">
+          <EntitySetMapping Name="Gruplar">
+            <EntityTypeMapping TypeName="Database1Model.Gruplar">
+              <MappingFragment StoreEntitySet="Gruplar">
+                <ScalarProperty Name="grupmesajId" ColumnName="grupmesajId" />
+                <ScalarProperty Name="grupAdi" ColumnName="grupAdi" />
+                <ScalarProperty Name="olusturmaZamani" ColumnName="olusturmaZamani" />
+                <ScalarProperty Name="icerik" ColumnName="icerik" />
+                <ScalarProperty Name="grupSohbetId" ColumnName="grupSohbetId" />
+                <ScalarProperty Name="groupUserId" ColumnName="groupUserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Katilimcilar">
+            <EntityTypeMapping TypeName="Database1Model.Katilimcilar">
+              <MappingFragment StoreEntitySet="Katilimcilar">
+                <ScalarProperty Name="katilimciId" ColumnName="katilimciId" />
+                <ScalarProperty Name="katilimciSohbetId" ColumnName="katilimciSohbetId" />
+                <ScalarProperty Name="katilimciUserId" ColumnName="katilimciUserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Mesajlar">
+            <EntityTypeMapping TypeName="Database1Model.Mesajlar">
+              <MappingFragment StoreEntitySet="Mesajlar">
+                <ScalarProperty Name="mesajId" ColumnName="mesajId" />
+                <ScalarProperty Name="mesajSohbetId" ColumnName="mesajSohbetId" />
+                <ScalarProperty Name="mesajUserId" ColumnName="mesajUserId" />
+                <ScalarProperty Name="icerik" ColumnName="icerik" />
+                <ScalarProperty Name="gonderimTarihi" ColumnName="gonderimTarihi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sohbetler">
+            <EntityTypeMapping TypeName="Database1Model.Sohbetler">
+              <MappingFragment StoreEntitySet="Sohbetler">
+                <ScalarProperty Name="sohbetId" ColumnName="sohbetId" />
+                <ScalarProperty Name="olusturanId" ColumnName="olusturanId" />
+                <ScalarProperty Name="olusturmaTarihi" ColumnName="olusturmaTarihi" />
+                <ScalarProperty Name="sohbetTipi" ColumnName="sohbetTipi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="Database1Model.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="KullaniciAdi" ColumnName="KullaniciAdi" />
+                <ScalarProperty Name="Sifre" ColumnName="Sifre" />
+                <ScalarProperty Name="AdiSoyadi" ColumnName="AdiSoyadi" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
